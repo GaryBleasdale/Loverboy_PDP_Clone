@@ -3,25 +3,68 @@
     {% render block %}
       
   {%- when 'short-description' -%}
-    <p>
+    <p style="font-size: 14px; line-height: 1.5; margin:0">
       {{ product.metafields.custom.product_short_description.value }}
     </p>
   {%- when 'text' -%}
-    <p
-      class="product__text inline-richtext{% if block.settings.text_style == 'uppercase' %} caption-with-letter-spacing{% elsif block.settings.text_style == 'subtitle' %} subtitle{% endif %}"
-      {{ block.shopify_attributes }}
-    >
-      {{- block.settings.text -}}
-    </p>
+    <h5>
+      {{- block.settings.text |  upcase -}}
+    </h5>
+  {%- when 'FAQ' -%}
+    <style>
+      .answer-hidden{
+        display:none;
+      }
+    </style>
+    <div>
+    {% comment %} type, handle, instance{% endcomment %}
+    {% assign FAQ = metaobjects['pdp_faq'][block.settings.faq_handle].faq %}
+      {% assign QAPair = FAQ | split: "},{" %}
+     {% for pair in QAPair %}
+      {% assign formatted_pair = "" %}
+       {% if forloop.first %}
+         {% assign formatted_pair = pair | remove_first: '[{'  %}
+         {% comment %} first pair: {{ formatted_pair }} {% endcomment %}
+       {% elsif forloop.last %}
+        {% assign formatted_pair = pair | remove_last: '}]'  %}
+        {% comment %} last pair: {{ formatted_pair  }} {% endcomment %}
+       {% else %}
+       {% assign formatted_pair = pair  %}
+          {% comment %} middle pair: {{ formatted_pair }} {% endcomment %}
+       {% endif %}
+       {% assign final_pair =  formatted_pair | split: '","' %}
+        {% assign question = "" %}
+        {% assign answer = "" %} 
+       {% for string in final_pair %}
+          {% if forloop.first %}
+            {% assign question = string |  remove_first: '"question":"'  %}
+          {% else %}
+          {% comment %} answer string {{ string }} {% endcomment %}
+          {% assign answer = string |  remove_first :'answer":"' | remove_last: '"' %}
+          {% comment %} post-process answer: {{ answer }} {% endcomment %}
+          {% endif %}
+        {% endfor %}
+
+          <div class="qa-pair">
+             <div class="question">{{question}}</div>
+             <div class="answer answer-hidden">{{answer}} </div>
+          </div>
+       
+
+     {% endfor %}
+     </div>
+     <script>
+       let qaPairs = document.querySelectorAll('.qa-pair')
+       qaPairs.forEach((pair)=>{
+        pair.addEventListener('click', ()=>{
+          let answer = pair.querySelector('.answer')
+          answer.classList.toggle('answer-hidden')
+        })
+       })
+     </script>
+
   {%- when 'title' -%}
-    <div class="product__title" {{ block.shopify_attributes }}>
-      <h1>{{ product.title | escape }}</h1>
-      <a href="{{ product.url }}" class="product__title">
-        <h2 class="h1">
-          {{ product.title | escape }}
-        </h2>
-      </a>
-    </div>
+      <h1 style="margin:0px">{{ product.title | escape | upcase }}</h1>
   {%- when 'price' -%}
     <div id="price-{{ section.id }}" role="status" {{ block.shopify_attributes }}>
       {%- render 'price',
@@ -112,21 +155,26 @@
     {%- if product.description != blank -%}
       
       <div class="rte quick-add-hidden" {{ block.shopify_attributes }} style="background:#fd7ad4; position:relative">
-        <div style="margin-top:calc(13.33vw * -1); position:relative">
-            <svg id="Layer_2" class="waveTop" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 194.35" style="position:relative;top: 10px; z-index:1">
+        <div style="margin-top:calc(13.33vw * -1); position:relative; margin-bottom:calc(13.33vw * -1)">
+            <svg id="Layer_2" class="waveTop" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 194.35" style="position:relative;top: 7px; z-index:1">
                <path d="M 1440 0 S 1302.45 85.3 1200 85.3 C 1121.26 85.3 1024.74 36.41 941.49 36.41 C 790.51 36.41 657.57 151.27 511.56 151.27 C 389.21 151.27 303.9 51.32 141.86 51.32 C 68.78 51.3 0 64 0 64 V 193.35 H 1440 V 0 Z" fill="#ff0087"></path>
                 <path d="M1440 20s-137.55 85.3-240 85.3c-78.74 0-175.26-48.89-258.51-48.89-150.98 0-283.92 114.86-429.93 114.86-122.35 0-207.66-99.95-369.7-99.95C68.78 71.33 0 84 0 84v109.35h1440V20Z" fill="#f9ed6c"></path>
                 <path d="M1440 40s-137.55 85.3-240 85.3c-78.74 0-175.26-48.89-258.51-48.89-150.98 0-283.92 114.86-429.93 114.86-122.35 0-207.66-99.95-369.7-99.95C68.78 91.33 0 104 0 104v90.35h1440V40Z" fill="#fd7ad4"></path>
               </svg>
-      <div class="product__description" style="position:relative;z-index:1;height:3000px;background:#fd7ad4">
-         <div>
+          <div class="product_description" >
+          <div>
             <div>&nbsp;</div>
             {{ product.description }}
-          </div>  
-          <div>
+           </div>  
+           <div>
             {{ product.metafields.custom.product_additional_information |  metafield_tag }}
-          </div>
-      </div>
+           </div>
+         </div>
+          <svg data-name="Layer 3" class="waveBottom" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 194.35">
+  <path d="M706.45 109.26C782.8 78.3 859.48 46.41 941.49 46.41S1121.26 95.3 1200 95.3c102.45 0 240-95.3 240-95.3H0v73s68.78-11.7 141.86-11.68c162.04 0 247.35 99.95 369.7 99.95 60.7 0 119.14-23.85 177.56-47.05l17.33-4.96Z" fill="var(--pink)"></path>
+  <path d="M1200 85.3c-78.74 0-175.26-48.89-258.51-48.89S782.8 70.3 706.45 101.26c-5.78 2.34-11.55 4.67-17.33 6.96-58.42 23.2-116.86 43.05-177.56 43.05-122.35 0-207.66-99.95-369.7-99.95C68.78 51.3 0 64 0 64v30s68.78-12.67 141.86-12.68c162.04 0 247.35 99.95 369.7 99.95 146.01 0 278.95-114.86 429.93-114.86 83.25 0 179.77 48.89 258.51 48.89 102.45 0 240-85.3 240-85.3V0s-137.55 85.3-240 85.3Z" fill="#ff0087""></path>
+  <path d="M941.49 56.41c-150.98 0-283.92 114.86-429.93 114.86-122.35 0-207.66-99.95-369.7-99.95C68.78 71.33 0 84 0 84v20s68.78-12.67 141.86-12.68c162.04 0 247.35 99.95 369.7 99.95 146.01 0 278.95-114.86 429.93-114.86 83.25 0 179.77 48.89 258.51 48.89 102.45 0 240-85.3 240-85.3V20s-137.55 85.3-240 85.3c-78.74 0-175.26-48.89-258.51-48.89Z" fill="#f9ed6c"></path>
+</svg>
         </div>
       </div>
       
@@ -161,11 +209,29 @@
         </div>
       </details>
     </div>
+  {%- when 'lifestyle_carrousel' %}
+    <div>
+      {% for i in (1..3) %}
+         {% case i %}
+           {% when 1 %}
+              {% if block.settings.lifestyle_carrousel_image_1 %}
+                <img src="{{  block.settings.lifestyle_carrousel_image_1 |  image_url }}" width="450px" style="max-width:100vw; width:100%"/>
+              {% endif %}
+           {% when 2 %}
+              {% if block.settings.lifestyle_carrousel_image_2 %}
+                <img src="{{ block.settings.lifestyle_carrousel_image_2 |  image_url }}" width="450px" style="max-width:100vw; width:100%"/>
+              {% endif %}
+           {% when 3 %}
+              {% if block.settings.lifestyle_carrousel_image_3 %}
+                <img src="{{ block.settings.lifestyle_carrousel_image_3 | image_url }}" width="450px" style="max-width:100vw; width:100%"/>
+              {% endif %}
+            {% endcase %}
+      {% endfor %}
+    </div>
   {%- when 'quantity_selector' -%}
     <div
       id="Quantity-Form-{{ section.id }}"
       class=" product-form__quantity{% if settings.inputs_shadow_vertical_offset != 0 and settings.inputs_shadow_vertical_offset < 0 %} product-form__quantity-top{% endif %}"
-      style="display:flex; width:100%"
       {{ block.shopify_attributes }}
     >
       {% comment %} TODO: enable theme-check once `item_count_for_variant` is accepted as valid filter {% endcomment %}

@@ -92,11 +92,6 @@ variant-selects {
   border-color: rgb(var(--color-foreground));
 }
 
-.product-form__input--pill input[type='radio']:checked + label {
-  background-color: rgb(var(--color-foreground));
-  color: rgb(var(--color-background));
-}
-
 @media screen and (forced-colors: active) {
   .product-form__input--pill input[type='radio']:checked + label {
     text-decoration: underline;
