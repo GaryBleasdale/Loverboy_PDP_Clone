@@ -11,11 +11,12 @@
       {{- block.settings.text |  upcase -}}
     </h5>
   {%- when 'FAQ' -%}
-    <style>
+    <div>
+      <style>
 
       .faq-block {
         position: relative;
-    margin-top: calc(15.33vw * -1);
+        margin-top: calc(24.33vw * -1);
       }
       .faq-container{
         display:grid;
@@ -60,6 +61,11 @@
       }  
 
       @media screen and (min-width: 769px) {
+
+      .faq-block {
+        position: relative;
+        margin-top: calc(8.33vw * -1);
+      }
         .faq-container{
         padding: var(--verticalGutter) calc(var(--gutter) / 2) var(--verticalGutter) calc((100vw - 1261px) / 2);
        }
@@ -151,6 +157,9 @@
         });
      </script>
 
+    </div>
+    
+
   {%- when 'title' -%}
       <h1 style="margin:0px">{{ product.title | escape | upcase }}</h1>
   {%- when 'price' -%}
@@ -240,10 +249,23 @@
       {%- endif -%}
     </p>
   {%- when 'description' -%}
+    <style>
+      .product-description-container{
+        margin-top:calc(13.33vw * -1);
+        position:relative;
+        margin-bottom:calc(17.33vw * -1);
+      }
+
+      @media and screen (min-width: 798px){
+         .product-description-container{
+        margin-bottom:calc(9.33vw * -1)
+      }
+      }
+    </style>
     {%- if product.description != blank -%}
       
-      <div class="rte quick-add-hidden" {{ block.shopify_attributes }} style="background:#fd7ad4; position:relative">
-        <div style="margin-top:calc(13.33vw * -1); position:relative; margin-bottom:calc(13.33vw * -1)">
+      <div class="rte quick-add-hidden" {{ block.shopify_attributes }} style="background:#fd7ad4; position:relative; z-index:1">
+        <div class="product-description-container" style="">
             <svg id="Layer_2" class="waveTop" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 194.35" style="position:relative;top: 7px; z-index:1">
                <path d="M 1440 0 S 1302.45 85.3 1200 85.3 C 1121.26 85.3 1024.74 36.41 941.49 36.41 C 790.51 36.41 657.57 151.27 511.56 151.27 C 389.21 151.27 303.9 51.32 141.86 51.32 C 68.78 51.3 0 64 0 64 V 193.35 H 1440 V 0 Z" fill="#ff0087"></path>
                 <path d="M1440 20s-137.55 85.3-240 85.3c-78.74 0-175.26-48.89-258.51-48.89-150.98 0-283.92 114.86-429.93 114.86-122.35 0-207.66-99.95-369.7-99.95C68.78 71.33 0 84 0 84v109.35h1440V20Z" fill="#f9ed6c"></path>
@@ -258,7 +280,7 @@
             {{ product.metafields.custom.product_additional_information |  metafield_tag }}
            </div>
          </div>
-          <svg data-name="Layer 3" class="waveBottom" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 194.35">
+          <svg data-name="Layer 3" class="waveBottom" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 194.35" style="position:inherit;top:-1px">
   <path d="M706.45 109.26C782.8 78.3 859.48 46.41 941.49 46.41S1121.26 95.3 1200 95.3c102.45 0 240-95.3 240-95.3H0v73s68.78-11.7 141.86-11.68c162.04 0 247.35 99.95 369.7 99.95 60.7 0 119.14-23.85 177.56-47.05l17.33-4.96Z" fill="var(--pink)"></path>
   <path d="M1200 85.3c-78.74 0-175.26-48.89-258.51-48.89S782.8 70.3 706.45 101.26c-5.78 2.34-11.55 4.67-17.33 6.96-58.42 23.2-116.86 43.05-177.56 43.05-122.35 0-207.66-99.95-369.7-99.95C68.78 51.3 0 64 0 64v30s68.78-12.67 141.86-12.68c162.04 0 247.35 99.95 369.7 99.95 146.01 0 278.95-114.86 429.93-114.86 83.25 0 179.77 48.89 258.51 48.89 102.45 0 240-85.3 240-85.3V0s-137.55 85.3-240 85.3Z" fill="#ff0087""></path>
   <path d="M941.49 56.41c-150.98 0-283.92 114.86-429.93 114.86-122.35 0-207.66-99.95-369.7-99.95C68.78 71.33 0 84 0 84v20s68.78-12.67 141.86-12.68c162.04 0 247.35 99.95 369.7 99.95 146.01 0 278.95-114.86 429.93-114.86 83.25 0 179.77 48.89 258.51 48.89 102.45 0 240-85.3 240-85.3V20s-137.55 85.3-240 85.3c-78.74 0-175.26-48.89-258.51-48.89Z" fill="#f9ed6c"></path>
@@ -298,14 +320,72 @@
       </details>
     </div>
   {%- when 'lifestyle_carrousel' %}
-    <div class="swiper">
-      <div class="swiper-wrapper">
-        <div class="swiper-slide">Slide 1</div>
-        <div class="swiper-slide">Slide 2</div>
-        <div class="swiper-slide">Slide 3</div>
+    <style>
+
+      .glide{
+        position:relative;
+      }
+      .glide__track{
+        display:flex;
+        flex-direction: row;
+        max-width: 100vw;
+        overflow:clip;
+      }
+
+      .glide__slides{
+        display:flex;
+        padding:0;
+      }
+
+      .glide__arrows{
+     position: absolute;
+     z-index: 2;
+     top: 38%;
+     width: 100%;
+     display: flex;
+     justify-content: space-between;
+     padding: 0 21px;
+    }
+
+    .glide__arrow{
+      cursor:pointer;
+    }
+
+    .glide__arrow:active svg{
+       fill:black;
+    }
+
+    @media screen and (min-width: 769px){
+      .glide__arrows{
+         top: 56%;
+      }
+    }
+      
+    </style>
+    <div style="overflow:auto">
+      <div class="glide">
+        <div class="glide__track" data-glide-el="track">
+          <ul class="glide__slides">
+            <li class="glide__slide">
+ <img src="{{  block.settings.lifestyle_carrousel_image_1 |  image_url }}" width="450px" style="max-width:100vw; width:100%"/>
+            </li>
+            <li class="glide__slide">
+  <img src="{{ block.settings.lifestyle_carrousel_image_2 |  image_url }}" width="450px" style="max-width:100vw; width:100%"/>
+            </li>
+          </ul>
+        </div>
+        <div class="glide__arrows" data-glide-el="controls">
+    <span class="glide__arrow glide__arrow--left" data-glide-dir="<"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z"/>
+</svg>
+
+</span>
+    <span class="glide__arrow glide__arrow--right" data-glide-dir=">"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-arrow-right-circle" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"/>
+</svg></span>
+  </div>
       </div>
-    <div>
-      {% for i in (1..3) %}
+      {% comment %} {% for i in (1..3) %}
          {% case i %}
            {% when 1 %}
               {% if block.settings.lifestyle_carrousel_image_1 %}
@@ -320,8 +400,23 @@
                 <img src="{{ block.settings.lifestyle_carrousel_image_3 | image_url }}" width="450px" style="max-width:100vw; width:100%"/>
               {% endif %}
             {% endcase %}
-      {% endfor %}
+      {% endfor %} {% endcomment %}
     </div>
+    <script>
+      let glide = new Glide('.glide', {
+      type: 'slider',
+      rewind: false,
+      bound: true,
+      startAt: 0,
+      gap:0,
+      perView: 1,
+      peek:0
+    }).mount()
+
+    console.log(glide)
+
+
+    </script>
   {%- when 'quantity_selector' -%}
     <div
       id="Quantity-Form-{{ section.id }}"

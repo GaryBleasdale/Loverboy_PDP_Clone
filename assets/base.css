@@ -3007,14 +3007,6 @@ details-disclosure > details {
   display: block;
 }
 
-.rte > *:first-child {
-  margin-top: 0;
-}
-
-.rte > *:last-child {
-  margin-bottom: 0;
-}
-
 .rte table {
   table-layout: fixed;
 }
