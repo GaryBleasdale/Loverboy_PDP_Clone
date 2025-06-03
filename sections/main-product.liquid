@@ -138,7 +138,8 @@
       border-radius:16px;
       height:54px;
       width: 88px;
-      border: 1px solid white;
+      border: 1px solid hsla(0, 0%, 100%, .2);
+      padding: 0 5px;
     }
 
     .quantity__button{
@@ -242,7 +243,7 @@
       {%- assign product_form_id = 'product-form-' | append: section.id -%}
       <div class="right-hand-container">
 
-        <div class="right-hand" style="position:sticky; top:-140px">
+        <div class="right-hand" style="position:sticky; top:-160px">
           {%- for block in section.blocks -%}
             {% if block.settings.desktop_righthand_side == true %}
               {%- render 'main-product-blocks'
