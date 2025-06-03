@@ -12,55 +12,143 @@
     </h5>
   {%- when 'FAQ' -%}
     <style>
-      .answer-hidden{
+
+      .faq-block {
+        position: relative;
+    margin-top: calc(15.33vw * -1);
+      }
+      .faq-container{
+        display:grid;
+        grid-template-columns: 1fr 1fr;
+        padding: var(--gutter);
+        background: var(--heart);
+
+      }
+
+      .faq-header{
+        width:50%;
+      }
+
+      .faq-header>h2{
+        margin:0;
+        text-transform:uppercase;
+      }
+      .faq-content>h4{
+        margin:0;
+        text-transform:uppercase;
+        font-size:28px
+      }
+
+      .question{
+        background-color: transparent;
+        color:white;
+        border:none;
+        padding-bottom:20px;
+      }
+      .faq-content>p{
         display:none;
       }
+      .faq-content>p>a{
+        color:white;
+      }
+      .faq-content>h4{
+        margin:0;
+        text-transform: uppercase;
+        line-height:1.2;
+        padding-bottom: 20px;
+        cursor: pointer;
+      }  
+
+      @media screen and (min-width: 769px) {
+        .faq-container{
+        padding: var(--verticalGutter) calc(var(--gutter) / 2) var(--verticalGutter) calc((100vw - 1261px) / 2);
+       }
+      .faq-content>h4{
+        font-size:28px
+      }
+      }
     </style>
+    <div class="faq-block">
+      <svg id="Layer_2" class="waveTop" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 194.35" style="position:relative;top: 7px; z-index:1">
+               <path d="M 1440 0 S 1302.45 85.3 1200 85.3 C 1121.26 85.3 1024.74 36.41 941.49 36.41 C 790.51 36.41 657.57 151.27 511.56 151.27 C 389.21 151.27 303.9 51.32 141.86 51.32 C 68.78 51.3 0 64 0 64 V 193.35 H 1440 V 0 Z" fill="#ff0087"></path>
+                <path d="M1440 20s-137.55 85.3-240 85.3c-78.74 0-175.26-48.89-258.51-48.89-150.98 0-283.92 114.86-429.93 114.86-122.35 0-207.66-99.95-369.7-99.95C68.78 71.33 0 84 0 84v109.35h1440V20Z" fill="#f9ed6c"></path>
+                <path d="M1440 40s-137.55 85.3-240 85.3c-78.74 0-175.26-48.89-258.51-48.89-150.98 0-283.92 114.86-429.93 114.86-122.35 0-207.66-99.95-369.7-99.95C68.78 91.33 0 104 0 104v90.35h1440V40Z" fill="var(--heart)"></path>
+              </svg>
+
+    <div class="faq-container">
+      
+    <div class="faq-header">
+      <h2>faq</h2>
+    </div>
     <div>
-    {% comment %} type, handle, instance{% endcomment %}
-    {% assign FAQ = metaobjects['pdp_faq'][block.settings.faq_handle].faq %}
-      {% assign QAPair = FAQ | split: "},{" %}
-     {% for pair in QAPair %}
-      {% assign formatted_pair = "" %}
-       {% if forloop.first %}
-         {% assign formatted_pair = pair | remove_first: '[{'  %}
-         {% comment %} first pair: {{ formatted_pair }} {% endcomment %}
-       {% elsif forloop.last %}
-        {% assign formatted_pair = pair | remove_last: '}]'  %}
-        {% comment %} last pair: {{ formatted_pair  }} {% endcomment %}
-       {% else %}
-       {% assign formatted_pair = pair  %}
-          {% comment %} middle pair: {{ formatted_pair }} {% endcomment %}
-       {% endif %}
-       {% assign final_pair =  formatted_pair | split: '","' %}
-        {% assign question = "" %}
-        {% assign answer = "" %} 
-       {% for string in final_pair %}
-          {% if forloop.first %}
-            {% assign question = string |  remove_first: '"question":"'  %}
-          {% else %}
-          {% comment %} answer string {{ string }} {% endcomment %}
-          {% assign answer = string |  remove_first :'answer":"' | remove_last: '"' %}
-          {% comment %} post-process answer: {{ answer }} {% endcomment %}
-          {% endif %}
-        {% endfor %}
+      {% comment %} <div>
+        {% comment %} type, handle, instance{% endcomment %}
+         {{block.settings.faq_handle}}
+          {% assign FAQ = metaobjects['pdp_faq'][block.settings.faq_handle].richmedia |  metafield_tag: field:  %}
+          faq: {{ FAQ }}
+          {% assign richmedia = FAQ |  metafield_tag %}
+          rm: {{ richmedia }}
+          {% for object in FAQ %}
+            object: {{ object }}
+          {% endfor %}
+            {% assign QAPair = FAQ | split: "},{" %}
+          {% for pair in QAPair %}
+            {% assign formatted_pair = "" %}
+            {% if forloop.first %}
+              {% assign formatted_pair = pair | remove_first: '[{'  %}
+              {% comment %} first pair: {{ formatted_pair }} {% endcomment %}
+            {% elsif forloop.last %}
+              {% assign formatted_pair = pair | remove_last: '}]'  %}
+              {% comment %} last pair: {{ formatted_pair  }} {% endcomment %}
+            {% else %}
+            {% assign formatted_pair = pair  %}
+                {% comment %} middle pair: {{ formatted_pair }} {% endcomment %}
+            {% endif %}
+            {% assign final_pair =  formatted_pair | split: '","' %}
+              {% assign question = "" %}
+              {% assign answer = "" %} 
+            {% for string in final_pair %}
+                {% if forloop.first %}
+                  {% assign question = string |  remove_first: '"question":"'  %}
+                {% else %}
+                {% comment %} answer string {{ string }} {% endcomment %}
+                {% assign answer = string |  remove_first :'answer":"' | remove_last: '"' %}
+                {% comment %} post-process answer: {{ answer }} {% endcomment %}
+                {% endif %}
+              {% endfor %}
 
-          <div class="qa-pair">
-             <div class="question">{{question}}</div>
-             <div class="answer answer-hidden">{{answer}} </div>
+                <div class="qa-pair">
+                  <button class="question h4 ">{{question}}</button>
+                  <div class="answer answer-hidden">{{answer}} </div>
+                </div>
+            
+
+          {% endfor %}
+                
           </div>
-       
 
-     {% endfor %}
+      </div> {% endcomment %}
+        <div class="faq-content">
+          {{ block.settings.faq_text }}
+        </div>
+    
      </div>
+         </div>
      <script>
-       let qaPairs = document.querySelectorAll('.qa-pair')
-       qaPairs.forEach((pair)=>{
-        pair.addEventListener('click', ()=>{
-          let answer = pair.querySelector('.answer')
-          answer.classList.toggle('answer-hidden')
-        })
-       })
+       let faqQuestions = document.querySelectorAll('.faq-content>h4');
+        faqQuestions.forEach((question) => {
+          question.addEventListener('click', () => {
+            let operationType = question.nextElementSibling && question.nextElementSibling.style.display === 'block' ? "close" : "open";
+            toggleNextParagraphs(question.nextElementSibling, operationType);
+
+            function toggleNextParagraphs(element, operationType) {
+              if (element && element.tagName === 'P') {
+                element.style.display = operationType === "open" ? "block" : "none";
+                toggleNextParagraphs(element.nextElementSibling, operationType);
+              }
+            }
+          });
+        });
      </script>
 
   {%- when 'title' -%}
@@ -210,6 +298,12 @@
       </details>
     </div>
   {%- when 'lifestyle_carrousel' %}
+    <div class="swiper">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide">Slide 1</div>
+        <div class="swiper-slide">Slide 2</div>
+        <div class="swiper-slide">Slide 3</div>
+      </div>
     <div>
       {% for i in (1..3) %}
          {% case i %}
