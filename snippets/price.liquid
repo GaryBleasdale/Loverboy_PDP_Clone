@@ -40,6 +40,23 @@
   endif
 -%}
 
+{% style %}
+  .product .price__container{
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.5;
+    letter-spacing: -0.2px;
+  }
+
+  @media screen and (min-width: 769px){
+      .product .price__container {
+      font: 500 24px var(--secondary-font-family);
+      letter-spacing: -0.1px;
+    }
+  }
+
+{% endstyle %}
+
 {%- unless target == null and placeholder == null -%}
   <div class="
       price

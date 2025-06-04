@@ -7,9 +7,11 @@
       {{ product.metafields.custom.product_short_description.value }}
     </p>
   {%- when 'text' -%}
-    <h5>
+    <aside class="pdp-text-block">
+     <h5>
       {{- block.settings.text |  upcase -}}
     </h5>
+    </aside>
   {%- when 'FAQ' -%}
     <div>
       <style>

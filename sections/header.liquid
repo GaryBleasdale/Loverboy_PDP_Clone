@@ -18,6 +18,15 @@
     margin-left: -1.2rem;
   }
 
+  sticky-header {
+  background: rgba(82,48,149,0);
+  transition: background 300ms cubic-bezier(1, 0, 0, 1);
+  }
+  .scrolled-past-header sticky-header {
+    background: rgba(82, 48, 139,1);
+    transition: background 300ms cubic-bezier(1, 0, 0, 1);
+  }
+
   {%- if section.settings.sticky_header_type == 'reduce-logo-size' -%}
     .scrolled-past-header .header__heading-logo-wrapper {
       width: 75%;
@@ -71,13 +80,15 @@
     }
   }
 
-sticky-header {
-  background: transparent;
-  transition: background 0.3s;
+.header-wrapper{
+  position:absolute;
+  width:100%
 }
-sticky-header:not(.at-top) {
-  background: var(--color-background, #fff);
-}
+
+
+
+
+
 </style>
 
 {%- style -%}
@@ -122,7 +133,7 @@ sticky-header:not(.at-top) {
   endif
 %}
 
-<{{ header_tag }} {% if header_tag == 'sticky-header' %}data-sticky-type="{{ section.settings.sticky_header_type }}"{% endif %} class="header-wrapper color-{{ section.settings.color_scheme }} gradient{% if section.settings.show_line_separator %} header-wrapper--border-bottom{% endif %}" style="position:absolute;width:100vw">
+<{{ header_tag }} {% if header_tag == 'sticky-header' %}data-sticky-type="{{ section.settings.sticky_header_type }}"{% endif %} class="header-wrapper color-{{ section.settings.color_scheme }} gradient{% if section.settings.show_line_separator %} header-wrapper--border-bottom{% endif %}" >
   {%- liquid
     assign social_links = false
     assign localization_forms = false
@@ -354,6 +365,7 @@ sticky-header:not(.at-top) {
 
     onScroll() {
       const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      
 
       if (this.predictiveSearch && this.predictiveSearch.isOpen) return;
 
@@ -363,6 +375,7 @@ sticky-header:not(.at-top) {
         requestAnimationFrame(this.hide.bind(this));
       } else if (scrollTop < this.currentScrollTop && scrollTop > this.headerBounds.bottom) {
         this.header.classList.add('scrolled-past-header');
+        
         if (!this.preventReveal) {
           requestAnimationFrame(this.reveal.bind(this));
         } else {
