@@ -217,6 +217,9 @@
 
   {%- endstyle -%}
 
+ 
+
+  {% assign product_form_id = 'product-form-' | append: section.id %}
   <script src="{{ 'product-info.js' | asset_url }}" defer="defer"></script>
   <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
   {%- if product.quantity_price_breaks_configured? -%}
@@ -268,15 +271,31 @@
             {% endif %}
           {% endfor %}
         </div>
-        <script>
-            // Set 'top' property value dynamically, to account for the possibility of different number of rendered elements.
-            document.addEventListener('DOMContentLoaded',()=>{
-              let rightHand = document.querySelector('.right-hand')
-              let rightHandComputedStyles = window.getComputedStyle(rightHand)
-              let rightHandComputedHeight = Number.parseInt(rightHandComputedStyles.getPropertyValue('height'))
-              rightHand.style.top = `-${rightHandComputedHeight-260}px`
-            })
-        </script>
+
+ <script>
+      // Set 'top' property value dynamically, to account for the possibility of different number of rendered elements.
+    document.addEventListener('DOMContentLoaded', () => {
+      const rightHand = document.querySelector('.right-hand');
+      const elementGap = rightHand.style.gap;
+      const headerHeight = 93;
+      
+      let heightAccumulator = 0;
+      if (rightHand) {
+        for (const child of rightHand.children) {
+          if (child.tagName === 'VARIANT-SELECTS') {
+            break;
+          }
+          if (child.offsetHeight > 0){
+            heightAccumulator += (child.offsetHeight + 15);
+          }
+        }
+
+        if (heightAccumulator > 0) {
+          rightHand.style.top = `-${heightAccumulator - headerHeight}px`;
+        }
+      }
+    });
+  </script>
       </div>
       {%- for block in section.blocks -%} 
         {% if forloop.index >= section.settings.blocks_on_right_hand_desktop %}     
@@ -1340,7 +1359,7 @@
                 "label": "t:sections.main-product.blocks.collapsible_tab.settings.icon.options__44.label"
               }
             ],
-            "default": "return",
+            "default": "truck",
             "label": "t:sections.main-product.blocks.icon_with_text.settings.icon_2.label"
           }, {
             "type": "image_picker",

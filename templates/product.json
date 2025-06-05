@@ -15,69 +15,59 @@
         "vendor": {
           "type": "text",
           "settings": {
-            "desktop_righthand_side": true,
             "text": "{{ product.metafields.custom.product_ui_type.value }}",
-            "text_style": "uppercase"
+            "text_style": "overline"
           }
         },
         "title": {
           "type": "title",
-          "settings": {
-            "desktop_righthand_side": true
-          }
+          "settings": {}
         },
         "rating_PpdT3n": {
           "type": "rating",
-          "settings": {
-            "desktop_righthand_side": true
-          }
+          "settings": {}
         },
         "price": {
           "type": "price",
-          "settings": {
-            "desktop_righthand_side": true
-          }
+          "settings": {}
         },
         "short_description_RgceV7": {
           "type": "short-description",
-          "settings": {
-            "desktop_righthand_side": true
-          }
+          "settings": {}
         },
         "variant_picker": {
           "type": "variant_picker",
           "settings": {
-            "desktop_righthand_side": true,
             "picker_type": "button",
             "swatch_shape": "circle"
           }
         },
         "quantity_selector": {
           "type": "quantity_selector",
-          "settings": {
-            "desktop_righthand_side": true
-          }
+          "settings": {}
         },
         "buy_buttons": {
           "type": "buy_buttons",
           "settings": {
-            "desktop_righthand_side": true,
             "show_dynamic_checkout": true,
             "show_gift_card_recipient": true
           }
         },
         "description": {
           "type": "description",
-          "settings": {
-            "desktop_righthand_side": false
-          }
+          "settings": {}
         },
         "lifestyle_carrousel_TBmJ7m": {
           "type": "lifestyle_carrousel",
           "settings": {
-            "desktop_righthand_side": false,
             "lifestyle_carrousel_image_1": "shopify://shop_images/793295b4ed8519b4fbf8eb6773a1ab5a73195caa-1620x1080_1920x_a790266a-84cf-43b3-ac4a-a72a6bcbb80b.webp",
             "lifestyle_carrousel_image_2": "shopify://shop_images/ab8ee0d18a8dbd9a67021d28e627550c4714881f-1620x1080_1920x_b90ca341-11c5-4a26-b75d-c746f33afb76.webp"
+          }
+        },
+        "faq_UaaxbQ": {
+          "type": "FAQ",
+          "settings": {
+            "faq_text": "<h4>do you need to sign for your order?</h4><p>Yes, a signature of someone 21+ with valid ID is required at the time of delivery.</p><p>If you miss the delivery, and the order is returned to our warehouse, you will have the option to:</p><p>1. Have your order resent, but incur additional return + re-shipping fees.</p><p>2. Receive a refund, minus return + shipping fees.</p><h4>some cans arrived dented, is that normal?</h4><p>While we would like to say cans won't arrive dented, unfortunately because our cans go from our formulator, to our shipping warehouse, to you, some dents can occur along that journey.</p><p>Reach out to with any questions to: <a href=\"mailto:hello@drinkloverboy.com\" title=\"mailto:hello@drinkloverboy.com\">hello@drinkloverboy.com.</a></p><h4>how long will it take for my order to arrive?</h4><p><strong>Spritz/Cocktails: </strong>Most orders arrive between 3-5 business days from the time that you receive tracking.</p><p><strong>Merchandise:</strong> Most orders typically arrive between 5-7 business days from the time you receive tracking, unless otherwise noted. Select items are made to order and take longer to get to you as a result.</p><p><strong>Pre-Order Items: </strong>Ship within 4 weeks.</p><p><strong>International Orders:</strong> Tend to take a minimum of 10 - 14 business days from the time you receive tracking.</p><p><em>Please note that Spritz/Cocktails ship from a different warehouse than our merch. Separate tracking will be sent.</em></p><h4>can i cancel my order?</h4><p>We have a short window of time that we are able to cancel or update an order. Once it is processed unfortunately no changes can me made to it.</p><p>Please reach out to <a href=\"mailto:hello@drinkloverboy.com\" title=\"mailto:hello@drinkloverboy.com\">hello@drinkloverboy.com</a> if you have any questions about your order.</p>"
           }
         }
       },
@@ -91,9 +81,11 @@
         "quantity_selector",
         "buy_buttons",
         "description",
-        "lifestyle_carrousel_TBmJ7m"
+        "lifestyle_carrousel_TBmJ7m",
+        "faq_UaaxbQ"
       ],
       "settings": {
+        "blocks_on_right_hand_desktop": 8,
         "enable_sticky_info": true,
         "color_scheme": "",
         "media_size": "large",
