@@ -88,10 +88,6 @@ variant-selects {
     var(--variant-pills-shadow-blur-radius) rgba(var(--color-shadow), var(--variant-pills-shadow-opacity));
 }
 
-.product-form__input--pill input[type='radio'] + label:hover {
-  border-color: rgb(var(--color-foreground));
-}
-
 @media screen and (forced-colors: active) {
   .product-form__input--pill input[type='radio']:checked + label {
     text-decoration: underline;

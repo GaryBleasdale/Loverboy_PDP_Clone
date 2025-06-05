@@ -3,20 +3,34 @@
     {% render block %}
       
   {%- when 'short-description' -%}
-    <p style="font-size: 14px; line-height: 1.5; margin:0">
+    <style>
+     .block-{{block.id}}
+     {
+      font-size: 14px; 
+      line-height: 1.5; 
+      margin:0
+    }
+    </style>
+    <p class="block-{{block.type}} block-{{block.id}}" tabindex="0">
       {{ product.metafields.custom.product_short_description.value }}
     </p>
   {%- when 'text' -%}
-    <aside class="pdp-text-block">
-     <h5>
-      {{- block.settings.text |  upcase -}}
-    </h5>
+    <aside class="pdp-text-block" tabindex="0">
+     {% if block.settings.text_style == 'overline' %}
+      <h5 class="overline">
+        {{- block.settings.text |  upcase -}}
+      </h5>
+     {% else %}
+      <h6 class="subtitle">
+        {{- block.settings.text |  upcase -}}
+      </h6>
+      {% endif %}
     </aside>
   {%- when 'FAQ' -%}
-    <div>
-      <style>
 
-      .faq-block {
+      <style>
+      
+      .block-{{ block.type }}  {
         position: relative;
         margin-top: calc(24.33vw * -1);
       }
@@ -27,7 +41,6 @@
         background: var(--heart);
 
       }
-
       .faq-header{
         width:50%;
       }
@@ -77,9 +90,9 @@
 
       @media screen and (min-width: 769px) {
 
-      .faq-block {
+      .block-{{ block.type }}  {
         position: relative;
-        margin-top: calc(8.33vw * -1);
+        margin-top: calc(9.33vw * -1);
       }
         .faq-container{
         padding: var(--verticalGutter) calc(var(--gutter) / 2) var(--verticalGutter) calc((100vw - 1261px) / 2);
@@ -89,7 +102,7 @@
       }
       }
     </style>
-    <div class="faq-block">
+    <div class="block-{{ block.type }} block-{{block.id}}" tabindex="0">
       <svg id="Layer_2" class="waveTop" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 194.35" style="position:relative;top: 7px; z-index:1">
                <path d="M 1440 0 S 1302.45 85.3 1200 85.3 C 1121.26 85.3 1024.74 36.41 941.49 36.41 C 790.51 36.41 657.57 151.27 511.56 151.27 C 389.21 151.27 303.9 51.32 141.86 51.32 C 68.78 51.3 0 64 0 64 V 193.35 H 1440 V 0 Z" fill="#ff0087"></path>
                 <path d="M1440 20s-137.55 85.3-240 85.3c-78.74 0-175.26-48.89-258.51-48.89-150.98 0-283.92 114.86-429.93 114.86-122.35 0-207.66-99.95-369.7-99.95C68.78 71.33 0 84 0 84v109.35h1440V20Z" fill="#f9ed6c"></path>
@@ -102,72 +115,21 @@
       <h2>faq</h2>
     </div>
     <div>
-      {% comment %} <div>
-        {% comment %} type, handle, instance{% endcomment %}
-         {{block.settings.faq_handle}}
-          {% assign FAQ = metaobjects['pdp_faq'][block.settings.faq_handle].richmedia |  metafield_tag: field:  %}
-          faq: {{ FAQ }}
-          {% assign richmedia = FAQ |  metafield_tag %}
-          rm: {{ richmedia }}
-          {% for object in FAQ %}
-            object: {{ object }}
-          {% endfor %}
-            {% assign QAPair = FAQ | split: "},{" %}
-          {% for pair in QAPair %}
-            {% assign formatted_pair = "" %}
-            {% if forloop.first %}
-              {% assign formatted_pair = pair | remove_first: '[{'  %}
-              {% comment %} first pair: {{ formatted_pair }} {% endcomment %}
-            {% elsif forloop.last %}
-              {% assign formatted_pair = pair | remove_last: '}]'  %}
-              {% comment %} last pair: {{ formatted_pair  }} {% endcomment %}
-            {% else %}
-            {% assign formatted_pair = pair  %}
-                {% comment %} middle pair: {{ formatted_pair }} {% endcomment %}
-            {% endif %}
-            {% assign final_pair =  formatted_pair | split: '","' %}
-              {% assign question = "" %}
-              {% assign answer = "" %} 
-            {% for string in final_pair %}
-                {% if forloop.first %}
-                  {% assign question = string |  remove_first: '"question":"'  %}
-                {% else %}
-                {% comment %} answer string {{ string }} {% endcomment %}
-                {% assign answer = string |  remove_first :'answer":"' | remove_last: '"' %}
-                {% comment %} post-process answer: {{ answer }} {% endcomment %}
-                {% endif %}
-              {% endfor %}
-
-                <div class="qa-pair">
-                  <button class="question h4 ">{{question}}</button>
-                  <div class="answer answer-hidden">{{answer}} </div>
-                </div>
-            
-
-          {% endfor %}
-                
-          </div>
-
-      </div> {% endcomment %}
-        <div class="faq-content">
-          {{ block.settings.faq_text }}
-        </div>
-    
+      <div class="faq-content" aria-label="Frequently Asked Questions">
+        {{ block.settings.faq_text }}
+      </div>
      </div>
-         </div>
+
      <script>
         let faqQuestions = document.querySelectorAll('.faq-content>h4');
         let plusPath = 'M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z'
         let minusPath = 'M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M4.5 7.5a.5.5 0 0 0 0 1h7a.5.5 0 0 0 0-1z'
         faqQuestions.forEach((question) => {
-          // Create wrapper div and add flex class
           const wrapper = document.createElement('div');
           wrapper.classList.add('faq-question');
-          // Insert wrapper before question
+          wrapper.tabIndex = '0'
           question.parentNode.insertBefore(wrapper, question);
-          // Move question into wrapper
           wrapper.appendChild(question);
-          // Create SVG element
           const svgNS = 'http://www.w3.org/2000/svg';
           const svg = document.createElementNS(svgNS, 'svg');
           svg.setAttribute('xmlns', svgNS);
@@ -180,16 +142,13 @@
           
           path.setAttribute('d', plusPath);
           svg.appendChild(path);
-          // Append SVG as sibling to h4 inside wrapper
           wrapper.appendChild(svg);
         });
 
-        // Add flex CSS for alignment
         const style = document.createElement('style');
         style.textContent = `.faq-question-flex { display: flex; align-items: center; gap: 8px; }`;
         document.head.appendChild(style);
 
-        // Existing FAQ toggle logic
         document.querySelectorAll('.faq-question').forEach((question) => {
           question.addEventListener('click', () => {
             let svgPath = question.querySelector('path')
@@ -210,7 +169,7 @@
     
 
   {%- when 'title' -%}
-      <h1 style="margin:0px">{{ product.title | escape | upcase }}</h1>
+      <h1 style="margin:0px" tabindex="0">{{ product.title | escape | upcase }}</h1>
   {%- when 'price' -%}
     <div id="price-{{ section.id }}" role="status" {{ block.shopify_attributes }}>
       {%- render 'price',
@@ -299,7 +258,11 @@
     </p>
   {%- when 'description' -%}
     <style>
+
       .product-description-container{
+        background:#fd7ad4; position:relative; z-index:1
+      }
+      .product-description-wrapper{
         margin-top:calc(13.33vw * -1);
         position:relative;
         margin-bottom:calc(17.33vw * -1);
@@ -313,14 +276,14 @@
     </style>
     {%- if product.description != blank -%}
       
-      <div class="rte quick-add-hidden" {{ block.shopify_attributes }} style="background:#fd7ad4; position:relative; z-index:1">
-        <div class="product-description-container" style="">
-            <svg id="Layer_2" class="waveTop" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 194.35" style="position:relative;top: 7px; z-index:1">
+      <div class="block-{{block.type}} block-{{block.id}} product-description-container rte quick-add-hidden" >
+        <div class="product-description-wrapper">
+            <svg id="Layer_2" class="waveTop" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 194.35" style="position:relative;top: 7px; z-index:1" aria-hidden="true">
                <path d="M 1440 0 S 1302.45 85.3 1200 85.3 C 1121.26 85.3 1024.74 36.41 941.49 36.41 C 790.51 36.41 657.57 151.27 511.56 151.27 C 389.21 151.27 303.9 51.32 141.86 51.32 C 68.78 51.3 0 64 0 64 V 193.35 H 1440 V 0 Z" fill="#ff0087"></path>
                 <path d="M1440 20s-137.55 85.3-240 85.3c-78.74 0-175.26-48.89-258.51-48.89-150.98 0-283.92 114.86-429.93 114.86-122.35 0-207.66-99.95-369.7-99.95C68.78 71.33 0 84 0 84v109.35h1440V20Z" fill="#f9ed6c"></path>
                 <path d="M1440 40s-137.55 85.3-240 85.3c-78.74 0-175.26-48.89-258.51-48.89-150.98 0-283.92 114.86-429.93 114.86-122.35 0-207.66-99.95-369.7-99.95C68.78 91.33 0 104 0 104v90.35h1440V40Z" fill="#fd7ad4"></path>
               </svg>
-          <div class="product_description" >
+          <div class="product_description" aria-label="Product description">
           <div>
             <div>&nbsp;</div>
             {{ product.description }}
@@ -371,22 +334,30 @@
   {%- when 'lifestyle_carrousel' %}
     <style>
 
-      .glide{
+     .block-{{ block.type }} block-{{block.id}}{
+      overflow:auto;
+     }
+      .glide--{{block.id}} {
         position:relative;
       }
-      .glide__track{
+      .glide--{{block.id}} .glide__track{
         display:flex;
         flex-direction: row;
         max-width: 100vw;
         overflow:clip;
       }
 
-      .glide__slides{
+      .glide--{{block.id}} .glide__slides{
         display:flex;
         padding:0;
       }
 
-      .glide__arrows{
+    .glide--{{block.id}} .glide__slide>img{
+      max-width:100vw; 
+      width:100%;
+    }
+
+      .glide--{{block.id}} .glide__arrows{
      position: absolute;
      z-index: 2;
      top: 38%;
@@ -396,56 +367,42 @@
      padding: 0 21px;
     }
 
-    .glide__arrow{
+    .glide--{{block.id}} .glide__arrow{
       cursor:pointer;
     }
 
-    .glide__arrow:active svg{
+    .glide--{{block.id}} .glide__arrow:active svg{
        fill:black;
     }
 
     @media screen and (min-width: 769px){
-      .glide__arrows{
+      .glide--{{block.id}} .glide__arrows{
          top: 56%;
       }
     }
       
     </style>
-    <div style="overflow:auto">
-      <div class="glide">
+    <div class="block-{{ block.type }} block-{{block.id}}">
+      <div class="glide--{{block.id}}">
         <div class="glide__track" data-glide-el="track">
-          <ul class="glide__slides">
-            {% for i in (1..3) %}
-         {% case i %}
-           {% when 1 %}
-              {% if block.settings.lifestyle_carrousel_image_1 %}
-                <li class="glide__slide">
-                  <img src="{{  block.settings.lifestyle_carrousel_image_1 |  image_url }}" width="450px" style="max-width:100vw; width:100%"/>
+          <ul class="glide__slides" role="region" aria-label="Image carousel">
+            {% for i in (1..7) %}
+              {% assign image_setting_property = "lifestyle_carrousel_image_" | append: forloop.index %}
+              {% if block.settings[image_setting_property] %}
+              <li class="glide__slide">
+                  <img src="{{ block.settings[image_setting_property] | image_url }}" alt="{{ block.settings[image_setting_property].alt }}" width="450px" style="max-width:100vw;width:100%;" />
                 </li>
               {% endif %}
-           {% when 2 %}
-              {% if block.settings.lifestyle_carrousel_image_2 %}
-                <li class="glide__slide">
-                  <img src="{{ block.settings.lifestyle_carrousel_image_2 |  image_url }}" width="450px" style="max-width:100vw; width:100%"/>
-                </li>
-              {% endif %}
-           {% when 3 %}
-              {% if block.settings.lifestyle_carrousel_image_3 %}
-                <li class="glide__slide">
-                  <img src="{{ block.settings.lifestyle_carrousel_image_3 | image_url }}" width="450px" style="max-width:100vw; width:100%"/>
-                </li>
-              {% endif %}
-            {% endcase %}
-      {% endfor %} 
+             {% endfor %} 
           </ul>
         </div>
         <div class="glide__arrows" data-glide-el="controls">
-    <span class="glide__arrow glide__arrow--left" data-glide-dir="<"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
+    <span class="glide__arrow glide__arrow--left" data-glide-dir="<" tab-index="0"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
   <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z"/>
 </svg>
 
 </span>
-    <span class="glide__arrow glide__arrow--right" data-glide-dir=">"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-arrow-right-circle" viewBox="0 0 16 16">
+    <span class="glide__arrow glide__arrow--right" data-glide-dir=">" tab-index="0"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-arrow-right-circle" viewBox="0 0 16 16">
   <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"/>
 </svg></span>
   </div>
@@ -453,7 +410,7 @@
       
     </div>
     <script>
-      let glide = new Glide('.glide', {
+      let glide = new Glide('.glide--{{block.id}}', {
       type: 'slider',
       rewind: false,
       bound: true,
