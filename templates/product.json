@@ -15,7 +15,7 @@
         "vendor": {
           "type": "text",
           "settings": {
-            "text": "{{ product.metafields.custom.product_ui_type.value }}",
+            "text": "Spritz",
             "text_style": "overline"
           }
         },
