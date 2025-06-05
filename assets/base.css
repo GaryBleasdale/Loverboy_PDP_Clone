@@ -1,13 +1,15 @@
 @font-face {
   font-family: 'Anton';
   src: url('./Anton-Regular.ttf');
-  font-weight: regular;
+  font-weight: normal;
+  font-display: swap;
 }
 
 @font-face {
   font-family: 'Jost';
   src: url('./Jost-VariableFont_wght.ttf');
-  font-weight: regular;
+  font-weight: 100 900;
+  font-display: swap;
 }
 
 :root {
@@ -24,12 +26,57 @@
   --violet: #52308b;
   --pink: #fd7ad4;
   --heart: #e15a41;
+  --magenta: #ff0087;
+  --yellow: #f9ed6c;
 
-  --primary-font-family: 'Jost';
-  --secondary-font-family: 'Anton';
+  --primary-font-family: 'Jost', sans-serif;
+  --secondary-font-family: 'Anton', sans-serif;
   --waveHeightVW: 13.33vw;
   --gutter: 20px;
   --verticalGutter: 72px;
+}
+
+body {
+  line-height: 21px;
+  font-size: 14px;
+  color: white;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+span {
+  color: white;
+}
+
+h1 {
+  font: 500 28px var(--secondary-font-family);
+  margin: 0;
+}
+
+h2 {
+  font: 500 42px var(--secondary-font-family);
+  line-height: 1;
+  margin-block-end: 34px;
+}
+
+h4,
+.h4 {
+  font: 500 32px var(--secondary-font-family);
+}
+
+h5 {
+  font: 500 2rem var(--secondary-font-family);
+  margin-block: 0;
+}
+
+h6 {
+  font: 700 16px / 1 var(--primary-font-family);
+  text-transform: uppercase;
+  margin: 0px 0px 16px 0px;
 }
 
 .product-card-wrapper .card,

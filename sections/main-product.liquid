@@ -37,42 +37,11 @@
       }
     }
 
-    body{
-      line-height: 21px;
-      font-size:14px;
-      color:white;
-    }
-    h1, h2,h3,h4,h5, h6, p, span {
-      color: white;
-    }
-
-    h1{
-      font: 500 28px var(--secondary-font-family);
-    }
-
-    h5 {
-      font: 500 2rem var(--secondary-font-family);
-      margin-block: 0;
-    }
-
-    h2{
-      font: 500 42px var(--secondary-font-family); 
-      line-height:1;
-      margin-block-end:34px;
-    }
-
-    h6{
-      font: 700 16px / 1 var(--primary-font-family);
-      text-transform:uppercase;
-      margin: 0px 0px 16px 0px;
-    }
-
-    h4, .h4{
-      font: 500 32px var(--secondary-font-family);
-    }
 
     .product {
       display: grid;
+      background-color: var(--violet);
+      color:white;
     }
 
     .product-image-container {
@@ -84,6 +53,7 @@
       position: relative;
       width: 100vw;
       padding-block: 64px;
+      min-height: 70vh;
     }
 
     .product-image-container > img {
@@ -105,6 +75,10 @@
       padding: var(--gutter) var(--gutter) calc(var(--waveHeightVW) + var(--gutter)*2);
     }
 
+    .form__label{
+      color:white;
+    }
+
     .pdp-text-block> .overline {
       color: var(--lavender) !important
     }
@@ -115,7 +89,7 @@
 
     .right-hand{
       position:sticky;
-      top:-120px;
+      top:-125px;
       display:flex;
       flex-direction:column;
       gap: 1.5rem;
@@ -133,22 +107,22 @@
 
     .product-form__input--pill input[type='radio']:checked + label {
       background-color: white;
-    color: var(--violet);
-    border-radius: 16px;
-    letter-spacing:0;
+      color: var(--violet);
+      border-radius: 16px;
+      letter-spacing:0;
     }
 
     .product_description{
       position:relative;
       z-index:1;
-      background:#fd7ad4;
+      background:var(--pink);
       padding: calc(var(--gutter)*2) var(--gutter);
       display:flex;
       flex-direction:column;
       gap: 3rem;
     }
 
-   quantity-input.quantity{
+    quantity-input.quantity{
       background-color: var(--violet) !important;
       color:white;
       border-radius:16px;
@@ -192,15 +166,15 @@
     }
 
 
-
     @media screen and (min-width: 769px) {
 
       h1{
         font-size: 32px;
       }
+
       .product {
-        display: grid;
         grid-template-columns: minmax(410px, 1fr) minmax(auto, 640px);
+
       }
 
       .pdp-text-block>h5{
@@ -233,12 +207,12 @@
       }
 
       .product_description{
-      padding: var(--verticalGutter) var(--gutter) var(--verticalGutter) calc(-630.5px + 50vw);
-    }
+        padding: var(--verticalGutter) var(--gutter) var(--verticalGutter) calc(-630.5px + 50vw);
+      }
 
-    .product-form__input--pill input[type=radio]+label{
-      font-size:16px;
-    }
+      .product-form__input--pill input[type=radio]+label{
+        font-size:16px;
+      }
     }
 
   {%- endstyle -%}
@@ -279,14 +253,14 @@
 
   {% assign variant_images = product.images | where: 'attached_to_variant?', true | map: 'src' %}
    <div>
-    <div class="product product--{{ section.settings.media_size }} product--{{ section.settings.media_position }} product--{{ section.settings.gallery_layout }} product--mobile-{{ section.settings.mobile_thumbnails }} grid grid--1-col {% if product.media.size > 0 %}grid--2-col-tablet{% else %}product--no-media{% endif %}" style="background-color: #52308b; color:white">
+    <div class="product product--{{ section.settings.media_size }} product--{{ section.settings.media_position }} product--{{ section.settings.gallery_layout }} product--mobile-{{ section.settings.mobile_thumbnails }} grid grid--1-col {% if product.media.size > 0 %}grid--2-col-tablet{% else %}product--no-media{% endif %}">
       <div class="product-image-container" role="img"  tab-index="0">
-        {{ product | image_url: width: auto | image_tag }}
+        {{ product | image_url: width: auto | image_tag: preload: true}}
       </div>
 
       {%- assign product_form_id = 'product-form-' | append: section.id -%}
       <div class="right-hand-container" aria-label="Product summary and options">
-        <div class="right-hand" style="position:sticky; top:-160px">
+        <div class="right-hand">
           {%- for block in section.blocks -%}
             {% if forloop.index <= section.settings.blocks_on_right_hand_desktop %}
               {%- render 'main-product-blocks'
@@ -294,6 +268,15 @@
             {% endif %}
           {% endfor %}
         </div>
+        <script>
+            // Set 'top' property value dynamically, to account for the possibility of different number of rendered elements.
+            document.addEventListener('DOMContentLoaded',()=>{
+              let rightHand = document.querySelector('.right-hand')
+              let rightHandComputedStyles = window.getComputedStyle(rightHand)
+              let rightHandComputedHeight = Number.parseInt(rightHandComputedStyles.getPropertyValue('height'))
+              rightHand.style.top = `-${rightHandComputedHeight-260}px`
+            })
+        </script>
       </div>
       {%- for block in section.blocks -%} 
         {% if forloop.index >= section.settings.blocks_on_right_hand_desktop %}     
