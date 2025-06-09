@@ -258,7 +258,7 @@
    <div>
     <div class="product product--{{ section.settings.media_size }} product--{{ section.settings.media_position }} product--{{ section.settings.gallery_layout }} product--mobile-{{ section.settings.mobile_thumbnails }} grid grid--1-col {% if product.media.size > 0 %}grid--2-col-tablet{% else %}product--no-media{% endif %}">
       <div class="product-image-container" role="img"  tab-index="0">
-        {{ product | image_url: width: auto | image_tag: preload: true}}
+        {{ product | image_url: width: auto | image_tag: widths: '200, 300, 400, 600, 800, 1000, 1200', sizes:'(max-width: 1200px) 500px,(max-width: 1400px) 600px, (max-width: 1500px) 800px', preload: true}}
       </div>
 
       {%- assign product_form_id = 'product-form-' | append: section.id -%}

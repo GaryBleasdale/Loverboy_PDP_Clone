@@ -358,6 +358,7 @@
       .glide--{{block.id}} .glide__slides{
         display:flex;
         padding:0;
+
       }
 
     .glide--{{block.id}} .glide__slide>img{
@@ -391,7 +392,7 @@
     }
       
     </style>
-    <div class="block-{{ block.type }} block-{{block.id}}">
+     <div class="block-{{ block.type }} block-{{block.id}}">
       <div class="glide--{{block.id}}">
         <div class="glide__track" data-glide-el="track">
           <ul class="glide__slides" role="region" aria-label="Image carousel">
@@ -399,8 +400,8 @@
               {% assign image_setting_property = "lifestyle_carrousel_image_" | append: forloop.index %}
               {% if block.settings[image_setting_property] %}
               <li class="glide__slide">
-                   {% assign image_url =  block.settings[image_setting_property] | image_url : width: auto %}
-                    {{ image_url | image_tag: loading: 'lazy'}}
+                   {% assign image_url =  block.settings[image_setting_property] | image_url : width: nil %}
+                    {{ image_url | image_tag: widths: '200, 300, 400, 600, 800, 1000, 1200', sizes:'(max-width: 1200px) 500px,(max-width: 1400px) 600px, (max-width: 1500px) 800px', loading: 'lazy'}}
                 </li>
               {% endif %}
              {% endfor %} 
@@ -419,7 +420,7 @@
           </span>
         </div>
       </div>
-    </div>
+    </div> 
     <script>
       let glide = new Glide('.glide--{{block.id}}', {
       type: 'slider',
